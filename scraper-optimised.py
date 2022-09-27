@@ -32,7 +32,9 @@ class Scraper():
             'div', {'class': 'lot-tile col-md-3 col-lg-2 p-x-xs px-md-1'})
         self.data = []
         for row in requested_data:
-
+            flag = row.attrs.get('id', False)
+            if not flag:
+                continue
             title = row.contents[1].find('a').text
             url = baseUrl + row.contents[1].find('a').attrs.get('href')
             lines = re.sub(
