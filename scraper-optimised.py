@@ -8,6 +8,7 @@ path = Path(__file__).parent / "chromedriver"
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-gpu")
+# attach chrome_options to driver
 driver = webdriver.Chrome(path, chrome_options=chrome_options)
 
 driver.get(
