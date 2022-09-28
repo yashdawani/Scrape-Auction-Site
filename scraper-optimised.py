@@ -5,6 +5,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup as soup
 from supabase import create_client, Client
 from decouple import config
+from twilio.rest import Client as tC
 
 
 class Scraper():
@@ -16,9 +17,16 @@ class Scraper():
         # attach chrome_options to driver
         self.driver = webdriver.Chrome(
             self.path, chrome_options=chrome_options)
+
         self.url = config('URL')
         self.key = config('API_KEY')
-        self.client: Client = create_client(self.url, self.key)
+        self.supa_client: Client = create_client(self.url, self.key)
+
+        self.account_sid = config('TWILIO_ACCOUNT_SID')
+        self.auth_token = config('TWILIO_AUTH_TOKEN')
+        self.phone_number = config('TWILIO_NUMBER')
+        self.target_number = config('TARGET_NUMBER')
+        self.twilio_client = tC(self.account_sid, self.auth_token)
 
     def startScraper(self):
         self.driver.get(
@@ -51,11 +59,27 @@ class Scraper():
 
     def writeRecords(self):
         for item in self.data:
-            query = self.client.table("Products").insert(item).execute()
+            query = self.supa_client.table("Products").insert(item).execute()
+
+    def sendMessage(self):
+        try:
+            for item in self.data:
+                query = self.supa_client.table("Products")
+                if query:
+                    pass
+        except Exception as e:
+            with open('logfile.txt', 'a+') as file:
+                file.write("hello")
+                file.write('\n')
+                file.close()
+
+
+
 
     def _run(self):
         self.startScraper()
-        self.writeRecords()
+        self.sendMessage()
+        # self.writeRecords()
 
 
 s = Scraper()
