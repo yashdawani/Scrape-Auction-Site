@@ -1,3 +1,4 @@
 beautifulsoup4==4.11.1
 selenium==4.4.3
 lxml==4.9.1
+sendgrid==6.9.7
