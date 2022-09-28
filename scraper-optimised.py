@@ -7,7 +7,6 @@ from supabase import create_client, Client
 from decouple import config
 
 
-
 class Scraper():
     def __init__(self) -> None:
         self.path = str(Path(__file__).parent / "chromedriver.exe")
@@ -57,6 +56,7 @@ class Scraper():
     def _run(self):
         self.startScraper()
         self.writeRecords()
+
 
 s = Scraper()
 s._run()
